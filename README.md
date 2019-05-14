@@ -10,3 +10,5 @@ The DLL gets injected in a target process (x64 only), the DLL will hook the GetC
 # GetClipboardData
 ![alt text :D](https://github.com/ferib/ClipJack2.0/blob/master/images/hookinfo.png?raw=true)
 
+# Donate
+BTC: 1FeribRHR98Crux3DEZPXzjLBpfmHTHKqJ
